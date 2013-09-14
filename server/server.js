@@ -1,13 +1,33 @@
+Accounts.onCreateUser(function(options, user) {
+  if (options.profile) {
+    options.profile.picture = "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?width=100&height=100";
+    user.profile = options.profile;
+  }
+  return user;
+});
+
+Meteor.publish('answers', function (gameId) {
+  return Answers.find({gameId: gameId});
+});
+
+// Meteor.publish('players', function (gameId) {
+//   return Meteor.users.find({$or: [
+//     {'profile.currentGameId': gameId},
+//     {_id: this.userId}
+//   ]});
+// });
+
+Meteor.publish("players", function (gameId) {
+  return Meteor.users.find({}, {fields: {profile: 1}});
+});
+
+Meteor.publish('games', function () {
+  return Games.find({});
+});
+
 Meteor.users.allow({
-  update : function(userId, upd) {
+  update: function(userId, upd) {
     return true;
   }
 });
 
-Accounts.onCreateUser(function(options, user) {
-    if (options.profile) {
-        options.profile.picture = "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?width=100&height=100";
-        user.profile = options.profile;
-    }
-    return user;
-});

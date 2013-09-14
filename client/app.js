@@ -5,20 +5,21 @@ Meteor.Router.add({
   },
   '/rooms/:id': function (id) {
     Session.set('currentGameId', id);
-    var score = 0;
-
-    var currentUser = Meteor.users.findOne(Meteor.userId());
-    if (currentUser) {
-      var score = Answers.find({
-        gameId: Session.get('currentGameId'), 
-        addedBy: currentUser.profile
-      }).count();
-    }
-    Meteor.users.update({_id: Meteor.userId()}, {$set : {
-      "profile.gameId": id,
-      "profile.score": score
-    }});
     return 'game';
+  }
+});
+
+Meteor.subscribe('games');
+Deps.autorun(function () {
+  var id = Session.get('currentGameId');
+  Meteor.subscribe('answers', id);
+  Meteor.subscribe('players', id);
+
+  if (Meteor.user() && Meteor.user().profile.currentGameId != id) {
+    Meteor.users.update(Meteor.userId(), {$set: {
+      'profile.score': 0,
+      'profile.currentGameId': id
+    }});
   }
 });
 
@@ -33,7 +34,7 @@ Template.game.guessed = function () {
 }
 
 Template.game.usersInGame = function () {
-  return Meteor.users.find({"profile.gameId": Session.get('currentGameId')}, {sort: {score: 1}});
+  return Meteor.users.find({'profile.currentGameId': Session.get('currentGameId')}, {sort: {score: 1}});
 }
 
 Template.game.events({
@@ -47,9 +48,8 @@ Template.game.events({
       Answers.update({_id: ans._id}, {
         $set: {addedBy: Meteor.user().profile}
       });
-      Meteor.users.update({_id: Meteor.userId()}, {
-        $inc: {"profile.score": 1}
-      });
+
+      Meteor.users.update(Meteor.userId(), {$inc: {'profile.score': 1}});
     } else {
       console.log('uh-oh');
     }
