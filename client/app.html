@@ -1,5 +1,5 @@
 <head>
-  <title>YouTube Jukebox</title>
+  <title>MultiSpork</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
 
@@ -7,7 +7,7 @@
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container-fluid">
-        <a class="brand" href="/">YouTube Jukebox</a>
+        <a class="brand" href="/">MultiSpork</a>
         <span class="pull-right">
           {{loginButtons align="right"}}
         </span>
@@ -24,8 +24,8 @@
 
 <template name="home">
   <div class="span10">
-    <h1>Welcome to YouTube Jukebox</h1>
-    <p>Select a room to continue. You will only recieve audio in your own room.</p>
+    <h1>Welcome to MultiSpork!</h1>
+    <p>Select a room to continue.</p>
   </div>
 </template>
 
@@ -50,10 +50,19 @@
 
   <div>
     {{#each usersInGame}}
-      {{profile.name}}
-      <br>
-      {{profile.score}}
-      <br><br>
+      {{> user}}
     {{/each}}
+  </div>
+</template>
+
+<template name="user">
+  <div class = "well span2">
+    <h3>{{profile.name}}</h3>
+    <img src='{{profile.picture}}' style='float:left;padding-right:15px'>
+    <p style="float:left;font-size:14pt">
+      <br><br>
+      Game Score: {{profile.score}}<br>
+      Match Wins: 6
+    </p>
   </div>
 </template>

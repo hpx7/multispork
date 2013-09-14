@@ -5,9 +5,18 @@ Meteor.Router.add({
   },
   '/rooms/:id': function (id) {
     Session.set('currentGameId', id);
+    var score = 0;
+
+    var currentUser = Meteor.users.findOne(Meteor.userId());
+    if (currentUser) {
+      var score = Answers.find({
+        gameId: Session.get('currentGameId'), 
+        addedBy: currentUser.profile
+      }).count();
+    }
     Meteor.users.update({_id: Meteor.userId()}, {$set : {
       "profile.gameId": id,
-      "profile.score": 0
+      "profile.score": score
     }});
     return 'game';
   }
@@ -24,7 +33,7 @@ Template.game.guessed = function () {
 }
 
 Template.game.usersInGame = function () {
-  return Meteor.users.find({"profile.gameId": Session.get('currentGameId')});
+  return Meteor.users.find({"profile.gameId": Session.get('currentGameId')}, {sort: {score: 1}});
 }
 
 Template.game.events({
