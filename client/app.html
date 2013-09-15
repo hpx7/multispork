@@ -159,15 +159,15 @@
 </template>
 
 <template name="answer">
-  {{#if postGame}}
-    <li class="block well" style="padding: 10px;">
+  {{#if guessed}}
+    <li class="block well" style="padding: 10px; background-image: linear-gradient(white, {{color_for addedBy}})">
       <p style="margin:0;">
         {{value}}
       </p>
     </li>
-  {{else}}  
-    {{#if guessed}}
-      <li class="block well" style="padding: 10px; background-image: linear-gradient(white, {{color_for addedBy}})">
+  {{else}}
+    {#if postGame}}
+      <li class="block well" style="padding: 10px;">
         <p style="margin:0;">
           {{value}}
         </p>

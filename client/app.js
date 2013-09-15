@@ -109,7 +109,7 @@ Template.answer.postGame = function () {
 }
 
 Template.leaderboard.usersInGame = function () {
-  return Scores.find({gameId: Session.get('currentGameId')}, {sort: {value: -1}})
+  return Scores.find({gameId: Session.get('currentGameId')}, {sort: {value: -1, name: 1}})
 }
 
 Template.game_link.num_players = function (gameId) {
