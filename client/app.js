@@ -27,6 +27,18 @@ Deps.autorun(function () {
   Meteor.subscribe('answers', Session.get('currentGameId'));
 });
 
+Template.game.preGame = function () {
+  return Games.findOne(Session.get('currentGameId')).state == 1;
+}
+
+Template.game.postGame = function () {
+  return Games.findOne(Session.get('currentGameId')).state == 3;
+}
+
+Template.game.isOwner = function () {
+  return Meteor.user() && Meteor.userId() == Games.findOne(Session.get('currentGameId')).owner._id;
+}
+
 Template.game.game = function () {
   return Games.findOne(Session.get('currentGameId'));
 }
@@ -79,9 +91,9 @@ Template.user.get_profile = function(userId) {
 
 Template.home.events({
   'click button#make_room': function() {
-    var owner = Meteor.user().profile.name;
+    var owner = Meteor.user();
     var room_name = $("#room_name").val();
-    var id = Games.insert({owner: owner, name: room_name});
+    var id = Games.insert({owner: owner, name: room_name, state: 1});
     Meteor.Router.to('/rooms/'+ id);
   },
 
@@ -113,6 +125,10 @@ Template.game.events({
     $('#guessinput').val('');
     $('#guessinput').focus();
     evt.preventDefault();
+  },
+
+  'click button#start_game': function(evt) {
+    Games.update(Session.get('currentGameId'), {$set: {state: 2}})
   }
 });
 

@@ -78,35 +78,50 @@
   <tr id = "{{_id}}" class="game_row">
     <td>{{name}}</td>
     <td>{{num_players _id}}</td>
-    <td>{{owner}}</td>
+    <td>{{owner.profile.name}}</td>
   </tr>
 </template>
 
 
 <template name="game">
   {{#if currentUser}}
-    <div class="span9">
-      {{#with game}}
+    {{#with game}}
+      <div class="span9">
         <h2>{{name}}</h2>
-      {{/with}}
-      <center>
-        <form class="form-search" id="guess">
-          <div class="input-append">
-            <input class="input-xxlarge search-query" id="guessinput" type="text" placeholder="Enter Guess" style="font-size:17.5px;padding:11px 19px;" autocomplete="off">
-            <input id="guessbutton" type="submit" value="Guess" class="btn btn-danger btn-large">
-          </div>
-        </form>
-        <div><p id = "message_box" style="color:#CF1D1D">&nbsp;</p></div>
-      </center>
-
-      <ul class="grid">
-        {{#each answers}}
-          {{> answer}}
-        {{/each}}
-      </ul>
-
-    </div>
-    {{> leaderboard}}
+        {{#if preGame}}
+          {{#if isOwner}}
+            <div class = "hero-unit">
+              <h1>Welcome, {{owner.profile.name}}!</h1>
+              <p>When you're ready, press start to begin.</p>
+              <button class = "btn btn-large btn-danger" id="start_game">Start Game</button>
+            </div>
+          {{else}}
+            <div class = "hero-unit">
+              <h1>Welcome!</h1>
+              <p>Waiting for the owner to begin the game...</p>
+            </div>
+          {{/if}}
+        {{else}}
+          {{#unless postGame}}
+            <center>
+              <form class="form-search" id="guess">
+                <div class="input-append">
+                  <input class="input-xxlarge search-query" id="guessinput" type="text" placeholder="Enter Guess" style="font-size:17.5px;padding:11px 19px;" autocomplete="off">
+                  <input id="guessbutton" type="submit" value="Guess" class="btn btn-danger btn-large">
+                </div>
+              </form>
+              <div><p id = "message_box" style="color:#CF1D1D">&nbsp;</p></div>
+            </center>
+          {{/unless}}
+          <ul class="grid">
+            {{#each answers}}
+              {{> answer}}
+            {{/each}}
+          </ul>
+        {{/if}}
+      </div>
+      {{> leaderboard}}
+    {{/with}}
   {{/if}}
 </template>
 
