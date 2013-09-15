@@ -101,21 +101,28 @@
 
       <ul class="grid">
         {{#each answers}}
-          <li class="block well" style="padding: 10px;">
-            <p style="margin:0;">
-              {{#if guessed}}
-                {{value}}
-                {{addedBy.name}}
-              {{else}}
-                Not guessed
-              {{/if}}
-            </p>
-          </li>
+          {{> answer}}
         {{/each}}
       </ul>
 
     </div>
     {{> leaderboard}}
+  {{/if}}
+</template>
+
+<template name="answer">
+  {{#if guessed}}
+    <li class="block well" style="padding: 10px; background-color: {{color_for addedBy}}">
+      <p style="margin:0;">
+        {{value}}
+      </p>
+    </li>
+  {{else}}
+    <li class="block well" style="padding: 10px;">
+      <p style="margin:0;">
+        {{{blanks value}}}
+      </p>
+    </li>
   {{/if}}
 </template>
 
@@ -131,11 +138,11 @@
 
 
 <template name="user">
-  <div class = "well">
+  <div class = "well" style="background-color: {{color}}">
     {{#with get_profile userId}}
-    <img src='{{picture}}' style='float:left;padding-right:15px'>
+    <img src='{{picture}}' style='float:left;padding-right:15px' width="75" height="75">
     <div>
-      <h3>{{name}}</h3>
+      <h4>{{name}}</h4>
     {{/with}}
       <h5>{{value}} Points</h5>
     </div>

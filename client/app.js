@@ -7,8 +7,11 @@ Meteor.Router.add({
     if (Meteor.userId() && Session.equals('scores_ready', true)) {
       var id = Session.get('currentGameId');
       var score = Scores.findOne({userId: Meteor.userId(), gameId: id});
-      console.log("Score: " + score);
-      if (!score) Scores.insert({userId: Meteor.userId(), gameId: id, value: 0});
+      console.log("Score: " + JSON.stringify(score));
+      if (!score) {
+        var color = colors[Template.game_link.num_players(id) % colors.length];
+        Scores.insert({userId: Meteor.userId(), gameId: id, value: 0, color: color});
+      }
     }
 
     return 'game';
@@ -34,13 +37,30 @@ Template.game.answers = function () {
   });
 }
 
-Template.game.guessed = function () {
+Template.answer.guessed = function () {
   return this.addedBy != null;
+}
+
+Template.answer.blanks = function (answer) {
+  var s = "";
+  var space = "&nbsp;";
+  for (var i = 0; i < answer.length; i++) {
+    if (answer.charAt(i) == " ") {
+      s += space + space;
+    } else {
+      s += "_ ";
+    }
+  }
+  return s;
+}
+
+Template.answer.color_for = function (user) {
+  console.log(user);
+  return Scores.findOne({gameId: Session.get('currentGameId'), userId: user._id}).color;
 }
 
 Template.leaderboard.usersInGame = function () {
   return Scores.find({gameId: Session.get('currentGameId')}, {sort: {value: -1}})
-  //return Meteor.users.find({'profile.currentGameId': Session.get('currentGameId')}, {sort: {score: 1}});
 }
 
 Template.game_link.num_players = function (gameId) {
@@ -79,11 +99,10 @@ Template.game.events({
     console.log(ans);
     if (ans && !ans.addedBy) {
       Answers.update({_id: ans._id}, {
-        $set: {addedBy: Meteor.user().profile}
+        $set: {addedBy: Meteor.user()}
       });
       var score = Scores.findOne({gameId: Session.get('currentGameId'), userId: Meteor.userId()});
       Scores.update(score._id, {$inc: {value: 1}});
-      //Meteor.users.update(Meteor.userId(), {$inc: {'profile.score': 1}});
     } else {
       if (!ans) {
         $('#message_box').html(guess + " is incorrect!");
