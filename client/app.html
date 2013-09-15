@@ -90,25 +90,30 @@
         <h2>{{name}}</h2>
       {{/with}}
       <center>
-        <form class="form-search" id ="guess">
+        <form class="form-search" id="guess">
           <div class="input-append">
             <input class="input-xxlarge search-query" id="guessinput" type="text" placeholder="Enter Guess" style="font-size:17.5px;padding:11px 19px;" autocomplete="off">
-            <input id="guessbutton" type="button" value="Guess" class="btn btn-danger btn-large">
+            <input id="guessbutton" type="submit" value="Guess" class="btn btn-danger btn-large">
           </div>
         </form>
         <div><p id = "message_box" style="color:#CF1D1D">&nbsp;</p></div>
       </center>
-      <br>
-      {{#each answers}}
-        {{#if guessed}}
-          {{value}}
-          <br>
-          {{addedBy.name}}
-        {{else}}
-          <p>Not guessed</p>
-        {{/if}}
-        <br><br>
-      {{/each}}
+
+      <ul class="grid">
+        {{#each answers}}
+          <li class="block well" style="padding: 10px;">
+            <p style="margin:0;">
+              {{#if guessed}}
+                {{value}}
+                {{addedBy.name}}
+              {{else}}
+                Not guessed
+              {{/if}}
+            </p>
+          </li>
+        {{/each}}
+      </ul>
+
     </div>
     {{> leaderboard}}
   {{/if}}

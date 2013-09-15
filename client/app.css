@@ -1,5 +1,5 @@
 body {
-	padding-top: 60px;
+  padding-top: 60px;
 }
 .table-hover tr {
   cursor: pointer;
@@ -7,4 +7,18 @@ body {
 
 h2 {
   color: #CF1D1D;
+}
+
+ul.grid {
+  margin:0 auto;
+}
+
+li.block {
+  display: inline-block;
+  width: 10%;
+  margin: 5px;
+}
+
+form#guess {
+  margin: 0 0 2px;
 }

@@ -10,13 +10,6 @@ Meteor.publish('answers', function (gameId) {
   return Answers.find({gameId: gameId});
 });
 
-// Meteor.publish('players', function (gameId) {
-//   return Meteor.users.find({$or: [
-//     {'profile.currentGameId': gameId},
-//     {_id: this.userId}
-//   ]});
-// });
-
 Meteor.publish("players", function () {
   return Meteor.users.find({}, {fields: {profile: 1}});
 });

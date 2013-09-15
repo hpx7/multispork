@@ -68,9 +68,7 @@ Template.home.events({
   'click tr.game_row': function(evt) {
     Meteor.Router.to('/rooms/'+$(evt.currentTarget).attr('id'));
   }
-})
-
-
+});
 
 Template.game.events({
   'submit form#guess': function(evt) {
@@ -101,4 +99,4 @@ Template.game.events({
 
 Meteor.startup(function() {
   Session.set('scores_ready', false);
-})
+});
