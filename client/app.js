@@ -49,8 +49,23 @@ Template.game.answers = function () {
   });
 }
 
+Template.game.winner = function () {
+  var winningScore = Template.leaderboard.usersInGame().fetch()[0];
+  return winningScore ? Meteor.users.findOne(winningScore.userId) : "";
+}
+
 Template.game.getMsg = function () {
   return Scores.findOne({gameId: Session.get('currentGameId'), userId: Meteor.userId()}).msg;
+}
+
+Template.game.formattedTime = function (secs) {
+  if (secs == null) {
+    secs = 120;
+  }
+
+  var min = Math.floor(secs / 60);
+  var sec = secs % 60;
+  return min + ':' + (sec < 10 ? ('0' + sec) : sec);
 }
 
 Template.answer.guessed = function () {
@@ -71,7 +86,6 @@ Template.answer.blanks = function (answer) {
 }
 
 Template.answer.color_for = function (user) {
-  console.log(user);
   return Scores.findOne({gameId: Session.get('currentGameId'), userId: user._id}).color;
 }
 
@@ -82,7 +96,6 @@ Template.leaderboard.usersInGame = function () {
 Template.game_link.num_players = function (gameId) {
   console.log("Calling num_players with " + gameId);
   return Scores.find({gameId: gameId}).count();
-  //return Meteor.users.find({'profile.currentGameId': gameId}).count();
 }
 
 Template.home.games = function() {
@@ -111,7 +124,7 @@ Template.game.events({
     var guess = $('#guessinput').val();
     console.log('you guessed: ' + guess);
 
-    var ans = Answers.findOne({gameId: Session.get('currentGameId'), value: guess});
+    var ans = Answers.findOne({gameId: Session.get('currentGameId'), lower: guess.toLowerCase()});
     var score = Scores.findOne({gameId: Session.get('currentGameId'), userId: Meteor.userId()});
     if (ans && !ans.addedBy) {
       Answers.update({_id: ans._id}, {

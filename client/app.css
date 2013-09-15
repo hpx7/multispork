@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'digi';
+  src: url('http://cssdeck.com/uploads/resources/fonts/digii/DS-DIGII.TTF');
+}
+
 body {
   padding-top: 60px;
 }
@@ -9,14 +14,22 @@ h2 {
   color: #CF1D1D;
 }
 
+h2#clock {
+  color: black;
+  margin: 0;
+  font-weight: normal;
+  font-family: digi;
+}
+
 ul.grid {
   margin:0 auto;
 }
 
 li.block {
   display: inline-block;
-  width: 10%;
+  width: 16.6%;
   margin: 5px;
+  text-align: center;
 }
 
 form#guess {

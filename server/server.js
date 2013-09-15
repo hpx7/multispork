@@ -32,7 +32,6 @@ Meteor.users.allow({
 
 Meteor.methods({
   start_game: function (id) {
-    console.log('in start_game, id=' + id);
     var clock = 120;
 
     Games.update(id, {$set: {state: 2, clock: clock}});
@@ -40,7 +39,9 @@ Meteor.methods({
       clock -= 1;
       Games.update(id, {$set: {clock: clock}})
 
-      if (clock === 0) {
+      var remainingAns = Answers.find({gameId: id, addedBy: null}).count();
+      if (clock == 0 || remainingAns == 0) {
+        Games.update(id, {$set: {clock: 0}})
         Meteor.clearInterval(interval);
         Games.update(id, {$set: {state: 3}})
       }

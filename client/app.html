@@ -87,19 +87,18 @@
   {{#if currentUser}}
     {{#with game}}
       <div class="span9">
-        <div class="row-fliud">
-          <div class="span3">
+        <div class="row-fluid">
+          <div class="span8">
             <h2>{{name}}</h2>
           </div>
-          <div class="span6">
-            <p>This is my very long description that is extremely descriptive words words words</p>
-          </div>
-          <div class="span3">
-              <p>{{clock}}</p>
+          <div class="span4">
+            <div style="float: right;">
+              <h2 id="clock">{{formattedTime clock}}</h2>
+              <p>Hint in :04</p>
+            </div>
           </div>
         </div>
-        <br><br>
-        <hr>
+        <hr style="margin: 0 0 15px;">
 
         {{#if preGame}}
           {{#if isOwner}}
@@ -115,17 +114,22 @@
             </div>
           {{/if}}
         {{else}}
-          {{#unless postGame}}
-            <center>
-              <form class="form-search" id="guess">
-                <div class="input-append">
-                  <input class="input-xxlarge search-query" id="guessinput" type="text" placeholder="Enter Guess" style="font-size:17.5px;padding:11px 19px;" autocomplete="off">
-                  <input id="guessbutton" type="submit" value="Guess" class="btn btn-danger btn-large">
-                </div>
-              </form>
-              <div><p id = "message_box" style="color:#CF1D1D">{{getMsg}}</p></div>
-            </center>
-          {{/unless}}
+          <center>
+            {{#if postGame}}
+              <h2 style="font-family: digi;"><marquee style="marquee-style: alternate;">
+                Game Over - {{winner.profile.name}} Wins
+              </marquee></h2>
+            {{else}}
+                <form class="form-search" id="guess">
+                <h4>This is my very long description that is extremely descriptive words words words</h4>
+                  <div class="input-append">
+                    <input class="input-xxlarge search-query" id="guessinput" type="text" placeholder="Enter Guess" style="font-size:17.5px;padding:11px 19px;" autocomplete="off">
+                    <input id="guessbutton" type="submit" value="Guess" class="btn btn-danger btn-large">
+                  </div>
+                </form>
+                <div><p id = "message_box" style="color:#CF1D1D">{{getMsg}}</p></div>
+            {{/if}}
+          </center>
           <ul class="grid">
             {{#each answers}}
               {{> answer}}
