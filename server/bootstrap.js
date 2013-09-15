@@ -6,9 +6,9 @@ addToCountriesGame = function (gameId) {
   });
 }
 
-var characters = ["Bowser","Captain Falcon","Donkey Kong","Falco","Fox","Ganondorf","Ice Climbers","Jigglypuff","Kirby","Link","Luigi","Mario","Marth","Mr. Game & Watch","Ness","Pikachu","Peach","Zelda","Samus","Yoshi"];
+var characters = ["Meta Knight","Diddy Kong","Snake","Falco","Marth","Wario","Ice Climbers","Olimar","Pikachu","Lucario","King Dedede","Zero Suit Samus","Mr. Game & Watch","Toon Link","Fox","Wolf","Peach","Donkey Kong","Kirby","R.O.B.","Pit","Sonic","Ike","Zelda","Luigi","Sheik","Ness","Yoshi","Pokemon Trainer","Lucas","Mario","Bowser","Samus","Captain Falcon","Link","Jigglypuff","Zelda","Ganondorf"];
 addToSmashBrosGame = function (gameId) {
-  Games.update(gameId, {$set: {description:"Name all the Super Smash Bros Melee characters you can"}});
+  Games.update(gameId, {$set: {description:"Name all the Super Smash Bros Brawl characters you can"}});
   characters.forEach(function (character) {
     Answers.insert({gameId: gameId, value: character, lower: character.toLowerCase()});
   });

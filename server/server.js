@@ -23,7 +23,6 @@ Meteor.publish("scores", function() {
   return Scores.find({});
 })
 
-
 Meteor.users.allow({
   update: function(userId, upd) {
     return true;
