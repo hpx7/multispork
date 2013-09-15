@@ -16,12 +16,6 @@ Meteor.Router.add({
     // }
 
     Session.set('currentGameId', id);
-    var score = Scores.findOne({userId: Meteor.userId(), gameId: id});
-    console.log("Score: " + score);
-    console.log("User: " + Meteor.user());
-    if (!score && Meteor.user()) 
-      Scores.insert({userId: Meteor.userId(), gameId: id, value: 0});
-
     return 'game';
   }
 });
@@ -29,8 +23,15 @@ Meteor.Router.add({
 Meteor.subscribe('games');
 Meteor.subscribe('players');
 Deps.autorun(function () {
-  Meteor.subscribe('scores', Session.get('currentGameId'));
+  Meteor.subscribe('scores', Session.get('currentGameId'), function() {
+    Session.set('scores_ready', true);
+  });
   Meteor.subscribe('answers', Session.get('currentGameId'));
+  var id = Session.get('currentGameId');
+  var score = Scores.findOne({userId: Meteor.userId(), gameId: id});
+  console.log("Score: " + score);
+  if (!score && Session.get('scores_ready')) 
+    Scores.insert({userId: Meteor.userId(), gameId: id, value: 0});
 });
 
 Template.game.answers = function () {
@@ -69,8 +70,14 @@ Template.home.events({
     var room_name = $("#room_name").val();
     var id = Games.insert({owner: owner, name: room_name});
     Meteor.Router.to('/rooms/'+ id);
+  },
+
+  'click tr.game_row': function(evt) {
+    Meteor.Router.to('/rooms/'+$(evt.currentTarget).attr('id'));
   }
 })
+
+
 
 Template.game.events({
   'click input#guessbutton': function() {
@@ -91,3 +98,7 @@ Template.game.events({
     }
   }
 });
+
+Meteor.startup(function() {
+  Session.set('scores_ready', false);
+})
