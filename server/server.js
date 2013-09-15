@@ -30,3 +30,21 @@ Meteor.users.allow({
   }
 });
 
+Meteor.methods({
+  start_game: function (id) {
+
+    var clock = 120;
+
+    Games.update(id, {$set: {state: 2, clock: clock}});
+    var interval = Meteor.setInterval(function () {
+      clock -= 1;
+      Games.update(id, {$set: {clock: clock}})
+
+      if (clock === 0) {
+        Meteor.clearInterval(interval);
+        Game.update(id, {$set: {state: 3}})
+      }
+    }, 1000);
+    return id;
+  }
+});

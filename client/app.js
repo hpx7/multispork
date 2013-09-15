@@ -128,7 +128,7 @@ Template.game.events({
   },
 
   'click button#start_game': function(evt) {
-    Games.update(Session.get('currentGameId'), {$set: {state: 2}})
+    Meteor.call('start_game', Session.get('currengGameId'));
   }
 });
 
