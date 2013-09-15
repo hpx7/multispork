@@ -7,7 +7,6 @@ Meteor.Router.add({
     if (Meteor.userId() && Session.equals('scores_ready', true)) {
       var id = Session.get('currentGameId');
       var score = Scores.findOne({userId: Meteor.userId(), gameId: id});
-      console.log("Score: " + JSON.stringify(score));
       if (!score) {
         var color = colors[Template.game_link.num_players(id) % colors.length];
         Scores.insert({userId: Meteor.userId(), gameId: id, value: 0, color: color});
@@ -23,6 +22,7 @@ Meteor.subscribe('players');
 Meteor.subscribe('scores', function() {
   Session.set('scores_ready', true);
 });
+
 Deps.autorun(function () {
   Meteor.subscribe('answers', Session.get('currentGameId'));
 });
@@ -83,6 +83,10 @@ Template.answer.hinted = function () {
   return this.hint != null && this.hint.length > 0;
 }
 
+Template.game.numVotes = function (option) {
+  return Scores.find({gameId: Session.get('currentGameId'), vote: option}).count();
+}
+
 Template.answer.blanks = function (answer) {
   var s = "";
   var space = "&nbsp;";
@@ -132,7 +136,6 @@ Template.home.events({
 Template.game.events({
   'submit form#guess': function(evt) {
     var guess = $('#guessinput').val();
-    console.log('you guessed: ' + guess);
 
     var ans = Answers.findOne({gameId: Session.get('currentGameId'), lower: guess.toLowerCase()});
     var score = Scores.findOne({gameId: Session.get('currentGameId'), userId: Meteor.userId()});
@@ -155,9 +158,26 @@ Template.game.events({
     evt.preventDefault();
   },
 
+  'click button#geoGame': function(evt) {
+    var score = Scores.findOne({gameId: Session.get('currentGameId'), userId: Meteor.userId()});
+    Scores.update(score._id, {$set: {vote: 1}});
+  },
+
+  'click button#vidGame': function(evt) {
+    var score = Scores.findOne({gameId: Session.get('currentGameId'), userId: Meteor.userId()});
+    Scores.update(score._id, {$set: {vote: 2}});
+  },
+
   'click button#start_game': function(evt) {
-    console.log('starting game...');
-    Meteor.call('start_game', Session.get('currentGameId'));
+    var maxVotes = -1, winner;
+    for (var i = 1; i <= 2; i++) {
+      var numVotes = Template.game.numVotes(i);
+      if (numVotes > maxVotes) {
+        maxVotes = numVotes;
+        winner = i;
+      }
+    }
+    Meteor.call('start_game', Session.get('currentGameId'), winner);
   }
 });
 

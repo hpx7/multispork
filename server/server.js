@@ -31,9 +31,15 @@ Meteor.users.allow({
 });
 
 Meteor.methods({
-  start_game: function (id) {
+  start_game: function (id, vote) {
     var clock = 120;
     var hintclock = 15;
+
+    if (vote == 1) {
+      addToCountriesGame(id);
+    } else if (vote == 2) {
+      addToSmashBrosGame(id);
+    }
 
     Games.update(id, {$set: {state: 2, clock: clock, hintclock: hintclock}});
     var interval = Meteor.setInterval(function () {

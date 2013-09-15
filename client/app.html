@@ -106,12 +106,26 @@
           {{#if isOwner}}
             <div class = "hero-unit">
               <h1>Welcome, {{owner.profile.name}}!</h1>
+
+              <br>
+              <p>Vote for a category:</p>
+              <button class = "btn btn-info" id="geoGame">Geography ({{numVotes 1}})</button>
+              <button class = "btn btn-info" id="vidGame">Video Games ({{numVotes 2}})</button>
+              <br><br>
+
               <p>When you're ready, press start to begin.</p>
               <button class = "btn btn-large btn-danger" id="start_game">Start Game</button>
             </div>
           {{else}}
             <div class = "hero-unit">
               <h1>Welcome!</h1>
+
+              <br>
+              <p>Vote for a category</p>
+              <button class = "btn btn-info" id="geo_game">Geography</button>
+              <button class = "btn btn-info" id="vid_game">Video Games</button>
+              <br><br>
+
               <p>Waiting for the owner to begin the game...</p>
             </div>
           {{/if}}
@@ -123,7 +137,7 @@
               </marquee></h2>
             {{else}}
                 <form class="form-search" id="guess">
-                <h4>This is my very long description that is extremely descriptive words words words</h4>
+                <h4>{{description}}</h4>
                   <div class="input-append">
                     <input class="input-xxlarge search-query" id="guessinput" type="text" placeholder="Enter Guess" style="font-size:17.5px;padding:11px 19px;" autocomplete="off">
                     <input id="guessbutton" type="submit" value="Guess" class="btn btn-danger btn-large">
@@ -182,6 +196,5 @@
     {{/with}}
       <h5>{{value}} Points</h5>
     </div>
-    <!-- <br style="clear:both"> -->
   </div>
 </template>
