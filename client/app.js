@@ -104,6 +104,10 @@ Template.answer.color_for = function (user) {
   return Scores.findOne({gameId: Session.get('currentGameId'), userId: user._id}).color;
 }
 
+Template.answer.postGame = function () {
+  return Games.findOne(Session.get('currentGameId')).state == 3;
+}
+
 Template.leaderboard.usersInGame = function () {
   return Scores.find({gameId: Session.get('currentGameId')}, {sort: {value: -1}})
 }

@@ -121,9 +121,9 @@
               <h1>Welcome!</h1>
 
               <br>
-              <p>Vote for a category</p>
-              <button class = "btn btn-info" id="geo_game">Geography</button>
-              <button class = "btn btn-info" id="vid_game">Video Games</button>
+              <p>Vote for a category:</p>
+              <button class = "btn btn-info" id="geoGame">Geography ({{numVotes 1}})</button>
+              <button class = "btn btn-info" id="vidGame">Video Games ({{numVotes 2}})</button>
               <br><br>
 
               <p>Waiting for the owner to begin the game...</p>
@@ -159,22 +159,30 @@
 </template>
 
 <template name="answer">
-  {{#if guessed}}
-    <li class="block well" style="padding: 10px; background-image: linear-gradient(white, {{color_for addedBy}})">
+  {{#if postGame}}
+    <li class="block well" style="padding: 10px;">
       <p style="margin:0;">
         {{value}}
       </p>
     </li>
-  {{else}}
-    <li class="block well" style="padding: 10px;">
-      <p style="margin:0;">
-        {{#if hinted}}
-          {{{hint}}}
-        {{else}}
-          {{{blanks value}}}
-        {{/if}}
-      </p>
-    </li>
+  {{else}}  
+    {{#if guessed}}
+      <li class="block well" style="padding: 10px; background-image: linear-gradient(white, {{color_for addedBy}})">
+        <p style="margin:0;">
+          {{value}}
+        </p>
+      </li>
+    {{else}}
+      <li class="block well" style="padding: 10px;">
+        <p style="margin:0;">
+          {{#if hinted}}
+            {{{hint}}}
+          {{else}}
+            {{{blanks value}}}
+          {{/if}}
+        </p>
+      </li>
+    {{/if}}
   {{/if}}
 </template>
 

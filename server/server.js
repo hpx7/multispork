@@ -35,6 +35,8 @@ Meteor.methods({
     var clock = 120;
     var hintclock = 15;
 
+    var hintsEnabled = true;
+
     if (vote == 1) {
       addToCountriesGame(id);
     } else if (vote == 2) {
@@ -55,7 +57,7 @@ Meteor.methods({
         Games.update(id, {$set: {state: 3}})
       }
 
-      if (hintclock == 0) {
+      if (hintclock == 0 && hintsEnabled) {
         //give a hint
         var toHint = Answers.findOne({gameId: id, addedBy: null, hint: null});
         if (toHint) {
@@ -75,7 +77,7 @@ Meteor.methods({
             }
             for (var i = 0; i < toHint.value.length; i++) {
               if (i == hint1) {
-                hint += toHint.value.charAt(i) + " ";
+                hint += toHint.value.charAt(i);
               } else if (toHint.value.charAt(i) == " ") {
                 hint += "&nbsp;&nbsp;"
               } else {
@@ -95,7 +97,7 @@ Meteor.methods({
             }    
             for (var i = 0; i < toHint.value.length; i++) {
               if (i == hint1 || i == hint2) {
-                hint += toHint.value.charAt(i) + " ";
+                hint += toHint.value.charAt(i);
               } else if (toHint.value.charAt(i) == " ") {
                 hint += "&nbsp;&nbsp;"
               } else {
@@ -118,7 +120,7 @@ Meteor.methods({
             }
             for (var i = 0; i < toHint.value.length; i++) {
               if (i == hint1 || i == hint2 || i == hint3) {
-                hint += toHint.value.charAt(i) + " ";
+                hint += toHint.value.charAt(i);
               } else if (toHint.value.charAt(i) == " ") {
                 hint += "&nbsp;&nbsp;"
               } else {
@@ -131,6 +133,8 @@ Meteor.methods({
         toHint = Answers.findOne({gameId: id, addedBy: null, hint: null});
         if (clock > 15 && toHint != null) {
           hintclock = 15;
+        } else {
+          hintsEnabled = false;
         }
       }
 
