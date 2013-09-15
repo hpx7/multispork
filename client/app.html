@@ -7,7 +7,9 @@
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container-fluid">
-        <a class="brand" href="/">MultiSpork</a>
+        <a class="brand" href="/">
+          Multi<span style="color: #CF1D1D">Spork</span>
+        </a>
         <span class="pull-right" style="padding-top:7px">
           {{loginButtons align="right"}}
         </span>
@@ -116,7 +118,7 @@
         {{else}}
           <center>
             {{#if postGame}}
-              <h2 style="font-family: digi;"><marquee style="marquee-style: alternate;">
+              <h2 style="font-family: digi; color: #CF1D1D;"><marquee style="marquee-style: alternate;">
                 Game Over - {{winner.profile.name}} Wins
               </marquee></h2>
             {{else}}
@@ -144,7 +146,7 @@
 
 <template name="answer">
   {{#if guessed}}
-    <li class="block well" style="padding: 10px; background-color: {{color_for addedBy}}">
+    <li class="block well" style="padding: 10px; background-image: linear-gradient(white, {{color_for addedBy}})">
       <p style="margin:0;">
         {{value}}
       </p>
@@ -168,7 +170,7 @@
 </template>
 
 <template name="user">
-  <div class = "well" style="background-color: {{color}}">
+  <div class = "well" style="background-image: linear-gradient(white, {{color}})">
     {{#with get_profile userId}}
     <img src='{{picture}}' style='float:left;padding-right:15px' width="75" height="75">
     <div>

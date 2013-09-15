@@ -94,7 +94,6 @@ Template.leaderboard.usersInGame = function () {
 }
 
 Template.game_link.num_players = function (gameId) {
-  console.log("Calling num_players with " + gameId);
   return Scores.find({gameId: gameId}).count();
 }
 
