@@ -96,7 +96,7 @@
           <div class="span4">
             <div style="float: right;">
               <h2 id="clock">{{formattedTime clock}}</h2>
-              <p>Hint in :04</p>
+              <p>Hint in {{formattedHintTime hintclock}}</p>
             </div>
           </div>
         </div>
@@ -154,7 +154,11 @@
   {{else}}
     <li class="block well" style="padding: 10px;">
       <p style="margin:0;">
-        {{{blanks value}}}
+        {{#if hinted}}
+          {{{hint}}}
+        {{else}}
+          {{{blanks value}}}
+        {{/if}}
       </p>
     </li>
   {{/if}}

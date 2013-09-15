@@ -68,8 +68,19 @@ Template.game.formattedTime = function (secs) {
   return min + ':' + (sec < 10 ? ('0' + sec) : sec);
 }
 
+Template.game.formattedHintTime = function (secs) {
+  if (secs == null) {
+    secs = 15;
+  }
+  return ':' + (secs < 10 ? ('0' + secs) : secs);
+}
+
 Template.answer.guessed = function () {
   return this.addedBy != null;
+}
+
+Template.answer.hinted = function () {
+  return this.hint != null && this.hint.length > 0;
 }
 
 Template.answer.blanks = function (answer) {
