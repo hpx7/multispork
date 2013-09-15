@@ -3,35 +3,25 @@ Meteor.Router.add({
     return 'home';
   },
   '/rooms/:id': function (id) {
-    // Session.set('currentGameId', id);
-    // console.log("id: "+Meteor.user());
-
-    // Meteor.users.update(Meteor.userId(), {$set: { 'profile.currentGameId': Session.get('currentGameId')}});
-
-    // if (Meteor.user() && Session.get('currentGameId') != Meteor.user().profile.currentGameId) {
-    //   console.log("Setting current game ");
-    //   Meteor.users.update(Meteor.userId(), {$set: {
-    //     'profile.score': 0
-    //   }});
-    // }
-
     Session.set('currentGameId', id);
+    if (Meteor.userId() && Session.equals('scores_ready', true)) {
+      var id = Session.get('currentGameId');
+      var score = Scores.findOne({userId: Meteor.userId(), gameId: id});
+      console.log("Score: " + score);
+      if (!score) Scores.insert({userId: Meteor.userId(), gameId: id, value: 0});
+    }
+
     return 'game';
   }
 });
 
 Meteor.subscribe('games');
 Meteor.subscribe('players');
+Meteor.subscribe('scores', function() {
+  Session.set('scores_ready', true);
+});
 Deps.autorun(function () {
-  Meteor.subscribe('scores', Session.get('currentGameId'), function() {
-    Session.set('scores_ready', true);
-  });
   Meteor.subscribe('answers', Session.get('currentGameId'));
-  var id = Session.get('currentGameId');
-  var score = Scores.findOne({userId: Meteor.userId(), gameId: id});
-  console.log("Score: " + score);
-  if (!score && Session.get('scores_ready')) 
-    Scores.insert({userId: Meteor.userId(), gameId: id, value: 0});
 });
 
 Template.game.answers = function () {
@@ -50,6 +40,7 @@ Template.game.usersInGame = function () {
 }
 
 Template.game_link.num_players = function (gameId) {
+  console.log("Calling num_players with " + gameId);
   return Scores.find({gameId: gameId}).count();
   //return Meteor.users.find({'profile.currentGameId': gameId}).count();
 }
@@ -59,8 +50,6 @@ Template.home.games = function() {
 }
 
 Template.user.get_profile = function(userId) {
-  console.log("ID: " + userId);
-  console.log("USER: " + Meteor.users.findOne(userId));
   return Meteor.users.findOne(userId).profile;
 }
 

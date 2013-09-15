@@ -25,8 +25,9 @@ Meteor.publish('games', function () {
   return Games.find({});
 });
 
-Meteor.publish("scores", function(gameId) {
-  return Scores.find({gameId: gameId});
+Meteor.publish("scores", function() {
+  this.ready();
+  return Scores.find({});
 })
 
 
