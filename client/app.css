@@ -34,3 +34,7 @@ li.block {
 form#guess {
   margin: 0 0 2px;
 }
+
+.hero-unit {
+  text-align: center;
+}

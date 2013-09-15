@@ -41,6 +41,10 @@ Meteor.methods({
       addToCountriesGame(id);
     } else if (vote == 2) {
       addToSmashBrosGame(id);
+    } else if (vote == 3) {
+      addToSportsGame(id);
+    } else if (vote == 4) {
+      addToMoviesGame(id);
     }
 
     Games.update(id, {$set: {state: 2, clock: clock, hintclock: hintclock}});

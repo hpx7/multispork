@@ -111,6 +111,8 @@
               <p>Vote for a category:</p>
               <button class = "btn btn-info" id="geoGame">Geography ({{numVotes 1}})</button>
               <button class = "btn btn-info" id="vidGame">Video Games ({{numVotes 2}})</button>
+              <button class = "btn btn-info" id="sptGame">Sports ({{numVotes 3}})</button>
+              <button class = "btn btn-info" id="mvsGame">Movies ({{numVotes 4}})</button>
               <br><br>
 
               <p>When you're ready, press start to begin.</p>
@@ -124,6 +126,8 @@
               <p>Vote for a category:</p>
               <button class = "btn btn-info" id="geoGame">Geography ({{numVotes 1}})</button>
               <button class = "btn btn-info" id="vidGame">Video Games ({{numVotes 2}})</button>
+              <button class = "btn btn-info" id="sptGame">Sports ({{numVotes 3}})</button>
+              <button class = "btn btn-info" id="mvsGame">Movies ({{numVotes 4}})</button>
               <br><br>
 
               <p>Waiting for the owner to begin the game...</p>
@@ -166,7 +170,7 @@
       </p>
     </li>
   {{else}}
-    {#if postGame}}
+    {{#if postGame}}
       <li class="block well" style="padding: 10px;">
         <p style="margin:0;">
           {{value}}

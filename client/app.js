@@ -172,9 +172,19 @@ Template.game.events({
     Scores.update(score._id, {$set: {vote: 2}});
   },
 
+  'click button#sptGame': function(evt) {
+    var score = Scores.findOne({gameId: Session.get('currentGameId'), userId: Meteor.userId()});
+    Scores.update(score._id, {$set: {vote: 3}});
+  },
+
+  'click button#mvsGame': function(evt) {
+    var score = Scores.findOne({gameId: Session.get('currentGameId'), userId: Meteor.userId()});
+    Scores.update(score._id, {$set: {vote: 4}});
+  },
+
   'click button#start_game': function(evt) {
     var maxVotes = -1, winner;
-    for (var i = 1; i <= 2; i++) {
+    for (var i = 1; i <= 4; i++) {
       var numVotes = Template.game.numVotes(i);
       if (numVotes > maxVotes) {
         maxVotes = numVotes;
