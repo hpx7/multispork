@@ -4,3 +4,7 @@ body {
 .table-hover tr {
   cursor: pointer;
 }
+
+h2 {
+  color: #CF1D1D;
+}
