@@ -87,7 +87,20 @@
   {{#if currentUser}}
     {{#with game}}
       <div class="span9">
-        <h2>{{name}}</h2>
+        <div class="row-fliud">
+          <div class="span3">
+            <h2>{{name}}</h2>
+          </div>
+          <div class="span6">
+            <p>This is my very long description that is extremely descriptive words words words</p>
+          </div>
+          <div class="span3">
+            <p>Clock</p>
+          </div>
+        </div>
+        <br><br>
+        <hr>
+
         {{#if preGame}}
           {{#if isOwner}}
             <div class = "hero-unit">
@@ -149,8 +162,6 @@
     {{/each}}
   </div>
 </template>
-
-
 
 <template name="user">
   <div class = "well" style="background-color: {{color}}">
