@@ -32,7 +32,7 @@ Meteor.users.allow({
 
 Meteor.methods({
   start_game: function (id) {
-
+    console.log('in start_game, id=' + id);
     var clock = 120;
 
     Games.update(id, {$set: {state: 2, clock: clock}});
@@ -42,7 +42,7 @@ Meteor.methods({
 
       if (clock === 0) {
         Meteor.clearInterval(interval);
-        Game.update(id, {$set: {state: 3}})
+        Games.update(id, {$set: {state: 3}})
       }
     }, 1000);
     return id;

@@ -49,6 +49,10 @@ Template.game.answers = function () {
   });
 }
 
+Template.game.getMsg = function () {
+  return Scores.findOne({gameId: Session.get('currentGameId'), userId: Meteor.userId()}).msg;
+}
+
 Template.answer.guessed = function () {
   return this.addedBy != null;
 }
@@ -108,19 +112,20 @@ Template.game.events({
     console.log('you guessed: ' + guess);
 
     var ans = Answers.findOne({gameId: Session.get('currentGameId'), value: guess});
-    console.log(ans);
+    var score = Scores.findOne({gameId: Session.get('currentGameId'), userId: Meteor.userId()});
     if (ans && !ans.addedBy) {
       Answers.update({_id: ans._id}, {
         $set: {addedBy: Meteor.user()}
       });
-      var score = Scores.findOne({gameId: Session.get('currentGameId'), userId: Meteor.userId()});
       Scores.update(score._id, {$inc: {value: 1}});
     } else {
+      var msg;
       if (!ans) {
-        $('#message_box').html(guess + " is incorrect!");
+        msg = guess + " is incorrect!";
       } else {
-        $('#message_box').html(guess + " has already been guessed!");
+        msg = guess + " has already been guessed!";
       }
+      Scores.update(score._id, {$set: {msg: msg}});
     }
     $('#guessinput').val('');
     $('#guessinput').focus();
@@ -128,7 +133,8 @@ Template.game.events({
   },
 
   'click button#start_game': function(evt) {
-    Meteor.call('start_game', Session.get('currengGameId'));
+    console.log('starting game...');
+    Meteor.call('start_game', Session.get('currentGameId'));
   }
 });
 

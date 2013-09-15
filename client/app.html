@@ -95,7 +95,7 @@
             <p>This is my very long description that is extremely descriptive words words words</p>
           </div>
           <div class="span3">
-            <p>Clock</p>
+              <p>{{clock}}</p>
           </div>
         </div>
         <br><br>
@@ -123,7 +123,7 @@
                   <input id="guessbutton" type="submit" value="Guess" class="btn btn-danger btn-large">
                 </div>
               </form>
-              <div><p id = "message_box" style="color:#CF1D1D">&nbsp;</p></div>
+              <div><p id = "message_box" style="color:#CF1D1D">{{getMsg}}</p></div>
             </center>
           {{/unless}}
           <ul class="grid">
