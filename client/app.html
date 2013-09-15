@@ -23,46 +23,94 @@
 </body>
 
 <template name="home">
-  <div class="span10">
+  <div class="hero-unit">
     <h1>Welcome to MultiSpork!</h1>
-    <p>Select a room to continue.</p>
+    <p>Select a room to continue, or create your own.</p>
+    <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Create Room</a>
   </div>
+  <br><br>
+  <table class = "table table-striped">
+    <thead>
+      <td>Room Name</td>
+      <td>Players</td>
+      <td>Room Owner</td>
+    </thead>
+    <tbody>
+      {{#each games}}
+        {{> game_link}}
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Create Room</h4>
+        </div>
+        <div class="modal-body">
+          <label for="room_name">Room Name:</label>
+          <input id="room_name">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="make_room">Make Room</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 </template>
 
+<template name="game_link">
+  <tr>
+    <td>{{name}}</td>
+    <td>{{num_players _id}}</td>
+    <td>{{owner}}</td>
+  </tr>
+</template>
+
+
 <template name="game">
-  <div>
-    <input id="guessinput" type="text">
-    <input id="guessbutton" type="button" value="Guess" class="btn">
-  </div>
+  {{#if currentUser}}
+    <div>
+      <input id="guessinput" type="text">
+      <input id="guessbutton" type="button" value="Guess" class="btn">
+    </div>
 
-  <div class="span10">
-    {{#each answers}}
-      {{#if guessed}}
-        {{value}}
-        <br>
-        {{addedBy.name}}
-      {{else}}
-        <p>Not guessed</p>
-      {{/if}}
-      <br><br>
-    {{/each}}
-  </div>
+    <div class="span10">
+      {{#each answers}}
+        {{#if guessed}}
+          {{value}}
+          <br>
+          {{addedBy.name}}
+        {{else}}
+          <p>Not guessed</p>
+        {{/if}}
+        <br><br>
+      {{/each}}
+    </div>
 
-  <div>
-    {{#each usersInGame}}
-      {{> user}}
-    {{/each}}
-  </div>
+    <div>
+      {{#each usersInGame}}
+        {{> user}}
+      {{/each}}
+    </div>
+  {{else}}
+    <p>Plz log in</p>
+  {{/if}}
 </template>
 
 <template name="user">
   <div class = "well span2">
-    <h3>{{profile.name}}</h3>
-    <img src='{{profile.picture}}' style='float:left;padding-right:15px'>
+    {{#with get_profile userId}}
+      <h3>{{name}}</h3>
+      <img src='{{picture}}' style='float:left;padding-right:15px'>
+    {{/with}}
     <p style="float:left;font-size:14pt">
       <br><br>
-      Game Score: {{profile.score}}<br>
-      Match Wins: 6
+      Game Score: {{value}}
     </p>
   </div>
 </template>

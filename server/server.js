@@ -17,13 +17,18 @@ Meteor.publish('answers', function (gameId) {
 //   ]});
 // });
 
-Meteor.publish("players", function (gameId) {
+Meteor.publish("players", function () {
   return Meteor.users.find({}, {fields: {profile: 1}});
 });
 
 Meteor.publish('games', function () {
   return Games.find({});
 });
+
+Meteor.publish("scores", function(gameId) {
+  return Scores.find({gameId: gameId});
+})
+
 
 Meteor.users.allow({
   update: function(userId, upd) {
